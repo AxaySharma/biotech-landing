@@ -71,11 +71,13 @@ export default function ScrollProgress() {
         {SECTIONS.map((section) => {
           const isActive = section.id === activeId;
           return (
-            <div
+            <button
               key={section.id}
               data-cursor="hover"
-              className="relative group flex items-center justify-center w-11 h-11 cursor-pointer"
+              className="relative group flex items-center justify-center w-11 h-11 cursor-pointer focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-2 rounded-full"
               onClick={() => handleDotClick(section.id)}
+              aria-label={`Scroll to ${section.label} section`}
+              aria-current={isActive ? "true" : undefined}
             >
               {/* Tooltip on Hover */}
               <div className="absolute right-8 bg-[#05070A]/95 backdrop-blur-md border border-foreground/10 text-[9px] font-mono uppercase tracking-widest text-foreground px-3 py-1.5 rounded-md opacity-0 pointer-events-none translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-xl whitespace-nowrap">
@@ -93,8 +95,9 @@ export default function ScrollProgress() {
                   scale: isActive ? 1.2 : 1,
                 }}
                 transition={{ duration: 0.2 }}
+                aria-hidden="true"
               />
-            </div>
+            </button>
           );
         })}
       </div>

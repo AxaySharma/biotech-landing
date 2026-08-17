@@ -103,10 +103,11 @@ export default function Stats() {
           animation: panGrid 24s linear infinite;
         }
       `}} />
-      <div className="stats-grid-bg absolute inset-0 pointer-events-none opacity-80" />
+      <div className="stats-grid-bg absolute inset-0 pointer-events-none opacity-80" aria-hidden="true" />
 
       {/* Content wrapper */}
       <div className="max-w-container mx-auto px-6 md:px-12 relative z-10">
+        <h2 className="sr-only">Key Performance Statistics</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           {statsData.map((stat, idx) => (
             <div key={idx} className="flex flex-col select-none">

@@ -151,7 +151,7 @@ export default function About() {
         <div className="max-w-container mx-auto px-6 md:px-12 flex flex-col items-center justify-between w-full h-full lg:justify-center">
           
           {/* Kinetic Headline Statement */}
-          <div
+          <h2
             ref={textRef}
             className="font-display text-3xl md:text-5xl lg:text-6xl font-medium tracking-tight text-center max-w-5xl leading-[1.1] mb-16 lg:mb-20 text-foreground"
           >
@@ -164,7 +164,7 @@ export default function About() {
                 {word}
               </span>
             ))}
-          </div>
+          </h2>
 
           {/* Cards Layout container */}
           <div
@@ -182,6 +182,7 @@ export default function About() {
                     <IconComp
                       className="w-6 h-6"
                       style={{ color: pillar.color }}
+                      aria-hidden="true"
                     />
                   </div>
                   <h3 className="font-display text-lg font-semibold text-foreground mb-2">

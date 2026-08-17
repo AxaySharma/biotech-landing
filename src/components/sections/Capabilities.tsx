@@ -130,6 +130,7 @@ export default function Capabilities() {
                     <IconComp
                       className="w-6 h-6 transition-colors duration-300"
                       style={{ color: item.color }}
+                      aria-hidden="true"
                     />
                   </motion.div>
 

@@ -94,6 +94,7 @@ export default function CustomCursor() {
           scale: isHovered ? 0.6 : 1,
         }}
         transition={{ duration: 0.15 }}
+        aria-hidden="true"
       />
 
       {/* Spring-delayed Orbiting Ring */}
@@ -110,6 +111,7 @@ export default function CustomCursor() {
           backgroundColor: isHovered ? "rgba(0, 229, 199, 0.05)" : "rgba(0, 229, 199, 0)",
         }}
         transition={{ duration: 0.2 }}
+        aria-hidden="true"
       />
     </>
   );

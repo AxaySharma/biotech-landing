@@ -191,7 +191,7 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
 
 export default function DnaHelix({ isMobile }: DnaMeshProps) {
   return (
-    <div className="w-full h-full relative select-none">
+    <div className="w-full h-full relative select-none" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 7.5], fov: 65 }}
         gl={{ antialias: true, alpha: true }}

@@ -97,7 +97,7 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-container px-6 md:px-12 h-20 flex items-center justify-between">
         {/* Geometric Abstract SVG Logo Mark */}
-        <a href="#" className="flex items-center gap-3 group focus:outline-none">
+        <a href="#" className="flex items-center gap-3 group focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-4 rounded-md">
           <svg
             width="32"
             height="32"
@@ -105,11 +105,12 @@ export default function Navbar() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="w-8 h-8"
+            aria-hidden="true"
           >
             <defs>
               <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="var(--accent-teal)" />
-                <stop offset="100%" stopColor="var(--accent-violet)" />
+                <stop offset="0%" stopColor="#00E5C7" />
+                <stop offset="100%" stopColor="#7C5CFF" />
               </linearGradient>
             </defs>
             {/* Hexagonal outer shell with gaps */}
@@ -142,7 +143,7 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-foreground/80 hover:text-accent-teal transition-colors relative py-2 focus:outline-none focus:text-accent-teal"
+              className="text-sm font-medium text-foreground/80 hover:text-accent-teal transition-colors relative py-2 focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-4 rounded-md focus:text-accent-teal"
             >
               {link.name}
             </a>
@@ -153,7 +154,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <a
             href="#contact"
-            className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-background bg-accent-teal hover:bg-accent-teal/90 transition-all shadow-[0_0_20px_rgba(0,229,199,0.15)] hover:shadow-[0_0_30px_rgba(0,229,199,0.3)] hover:scale-[1.02] active:scale-[0.98] duration-200 focus:outline-none"
+            className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-background bg-accent-teal hover:bg-accent-teal/90 transition-all shadow-[0_0_20px_rgba(0,229,199,0.15)] hover:shadow-[0_0_30px_rgba(0,229,199,0.3)] hover:scale-[1.02] active:scale-[0.98] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070A]"
           >
             Initiate Discovery
           </a>
@@ -162,7 +163,9 @@ export default function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-foreground/80 hover:text-accent-teal transition-colors focus:outline-none"
+          className="md:hidden p-2 text-foreground/80 hover:text-accent-teal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070A] rounded-md"
+          aria-expanded={isOpen}
+          aria-controls="mobile-drawer"
           aria-label={isOpen ? "Close menu" : "Open menu"}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -178,13 +181,14 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 top-20 bg-background/80 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-[#05070A]/40 backdrop-blur-sm z-30 md:hidden"
+              aria-hidden="true"
             />
 
             {/* Slide-out side drawer */}
             <motion.div
+              id="mobile-drawer"
               variants={slideInVariants}
               initial="hidden"
               animate="visible"
@@ -206,7 +210,7 @@ export default function Navbar() {
                     <a
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="block text-2xl font-display font-medium text-foreground hover:text-accent-teal transition-colors py-3 focus:outline-none"
+                      className="block text-2xl font-display font-medium text-foreground hover:text-accent-teal transition-colors py-3 focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-2 rounded-md"
                     >
                       {link.name}
                     </a>
@@ -220,11 +224,11 @@ export default function Navbar() {
                 transition={{ delay: shouldReduceMotion ? 0.05 : 0.3, duration }}
                 className="flex flex-col gap-4"
               >
-                <div className="h-px bg-foreground/10 my-4" />
+                <div className="h-px bg-foreground/10 my-4" aria-hidden="true" />
                 <a
                   href="#contact"
                   onClick={() => setIsOpen(false)}
-                  className="w-full text-center px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider text-background bg-accent-teal hover:bg-accent-teal/95 transition-all shadow-[0_0_20px_rgba(0,229,199,0.15)] focus:outline-none"
+                  className="w-full text-center px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider text-background bg-accent-teal hover:bg-accent-teal/95 transition-all shadow-[0_0_20px_rgba(0,229,199,0.15)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-teal focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070A]"
                 >
                   Initiate Discovery
                 </a>

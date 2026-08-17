@@ -278,12 +278,13 @@ export default function ShaderBackground() {
         style={{
           background: "linear-gradient(135deg, #05070A 0%, #030508 100%)",
         }}
+        aria-hidden="true"
       />
     );
   }
 
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none z-[-1] select-none">
+    <div className="fixed inset-0 w-full h-full pointer-events-none z-[-1] select-none" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 1] }}
         gl={{ antialias: false, alpha: false, depth: false }}

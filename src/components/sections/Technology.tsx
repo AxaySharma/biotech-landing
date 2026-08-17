@@ -53,14 +53,18 @@ export default function Technology() {
             </div>
 
             {/* Mobile Tab Selector: Horizontal, scrollable pills (Mobile/Tablet only) */}
-            <div className="flex lg:hidden items-center gap-2 overflow-x-auto pb-3 w-full -mx-6 px-6 md:-mx-12 md:px-12 scrollbar-none">
+            <div role="tablist" aria-label="Mobile platform selectors" className="flex lg:hidden items-center gap-2 overflow-x-auto pb-3 w-full -mx-6 px-6 md:-mx-12 md:px-12 scrollbar-none">
               {techPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
                   <button
                     key={idx}
+                    id={`mobile-tab-${idx}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="pillar-tabpanel"
                     onClick={() => setActiveIndex(idx)}
-                    className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-medium border transition-all duration-300 focus:outline-none ${
+                    className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-medium border transition-all duration-300 focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-2 ${
                       isActive
                         ? "bg-accent-teal/10 border-accent-teal text-accent-teal"
                         : "bg-white/[0.02] border-foreground/5 text-foreground/60 hover:border-foreground/10"
@@ -73,14 +77,18 @@ export default function Technology() {
             </div>
 
             {/* Desktop Vertical Tab buttons (Desktop only) */}
-            <div className="hidden lg:flex flex-col gap-3">
+            <div role="tablist" aria-label="Desktop platform selectors" className="hidden lg:flex flex-col gap-3">
               {techPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
                   <button
                     key={idx}
+                    id={`desktop-tab-${idx}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="pillar-tabpanel"
                     onClick={() => setActiveIndex(idx)}
-                    className={`text-left p-5 rounded-xl border transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-accent-teal/35 ${
+                    className={`text-left p-5 rounded-xl border transition-all duration-300 focus:outline-none focus-visible:outline-2 focus-visible:outline-accent-teal focus-visible:outline-offset-2 ${
                       isActive
                         ? "bg-white/[0.03] border-accent-teal/30 shadow-[0_0_15px_rgba(0,229,199,0.02)]"
                         : "bg-transparent border-foreground/5 hover:border-foreground/10 hover:bg-white/[0.01]"
@@ -105,7 +113,7 @@ export default function Technology() {
           {/* Right Column - Visualizer Canvas + Description Display */}
           <div className="lg:col-span-7 flex flex-col gap-6 w-full">
             {/* Visualizer network */}
-            <div className="w-full aspect-[4/3] max-h-[380px] md:max-h-[420px] relative">
+            <div className="w-full aspect-[4/3] max-h-[380px] md:max-h-[420px] relative" aria-hidden="true">
               <MoleculeNetwork activeIndex={activeIndex} />
             </div>
 
@@ -113,6 +121,9 @@ export default function Technology() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
+                id="pillar-tabpanel"
+                role="tabpanel"
+                aria-labelledby={`desktop-tab-${activeIndex}`}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}

@@ -149,6 +149,9 @@ export default function Preloader() {
           if (isWiping) handleWipeComplete();
         }}
         className="fixed inset-0 bg-[#05070A] flex flex-col items-center justify-center z-[9999]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Loading website contents"
       >
         <div className="flex flex-col items-center gap-8 select-none">
           {/* Centered SVG double-helix drawing */}
@@ -162,6 +165,7 @@ export default function Preloader() {
             className="w-20 h-44"
             animate={isWiping ? { opacity: 0 } : { opacity: 1 }}
             transition={{ duration: 0.3 }}
+            aria-hidden="true"
           >
             {/* Horizontal Rungs (connectors) */}
             <g stroke="white" strokeOpacity="0.08" strokeWidth="1">
