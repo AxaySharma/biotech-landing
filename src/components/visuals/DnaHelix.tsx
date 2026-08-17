@@ -3,6 +3,7 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { EffectComposer, Bloom, ChromaticAberration, Vignette } from "@react-three/postprocessing";
 
 interface DnaMeshProps {
   isMobile: boolean;
@@ -207,6 +208,28 @@ export default function DnaHelix({ isMobile }: DnaMeshProps) {
           castShadow
         />
         <HelixVisuals isMobile={isMobile} />
+
+        {/* Postprocessing effects (Skip entirely on mobile/tablet below lg) */}
+        {!isMobile && (
+          <EffectComposer multisampling={0} enableNormalPass={false}>
+            {/* Subtle glow on brightest emissive elements */}
+            <Bloom
+              luminanceThreshold={0.7}
+              luminanceSmoothing={0.3}
+              intensity={0.65}
+            />
+            {/* Very slight chromatic offset near edges */}
+            <ChromaticAberration
+              offset={new THREE.Vector2(0.0006, 0.0006)}
+            />
+            {/* Soft vignette to center focus */}
+            <Vignette
+              eskil={false}
+              offset={0.4}
+              darkness={0.6}
+            />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   );
