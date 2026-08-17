@@ -21,8 +21,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Premium Biotech Brand",
-  description: "Innovative biotechnology solutions driven by research and development.",
+  title: "NEXUSBIO — Architecting Molecular Intelligence",
+  description: "Nexus Bio develops programmable therapeutics and molecular dynamics simulations to program genetic logic and accelerate clinical translation.",
+  openGraph: {
+    title: "NEXUSBIO — Architecting Molecular Intelligence",
+    description: "Nexus Bio develops programmable therapeutics and molecular dynamics simulations to program genetic logic and accelerate clinical translation.",
+    type: "website",
+    url: "https://nexusbio.tech", // Placeholder URL representing the brand domain
+    siteName: "NEXUSBIO",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NEXUSBIO — Architecting Molecular Intelligence",
+    description: "Nexus Bio develops programmable therapeutics and molecular dynamics simulations to program genetic logic and accelerate clinical translation.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
