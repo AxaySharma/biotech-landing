@@ -1,0 +1,103 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/motion-variants";
+import MoleculeNetwork from "../visuals/MoleculeNetwork";
+
+const techPillars = [
+  {
+    name: "Machine Learning Target Mapping",
+    tagline: "ML-driven screening models locating binding pockets.",
+    description: "Our proprietary deep learning models analyze large genetic cohorts to identify novel protein cavities. By running massive virtual screenings, we predict binding affinities of small molecules before committing to chemical synthesis.",
+  },
+  {
+    name: "Parallel In-Silico Synthesis",
+    tagline: "High-throughput molecular dynamics simulation.",
+    description: "We simulate structural modifications and binding dynamics at sub-nanosecond resolutions across multiple high-performance cloud clusters. This provides atomic-level insights into ligand stability and structural changes.",
+  },
+  {
+    name: "Automated Assay Pipelines",
+    tagline: "Robotic screeners validating molecular efficacy.",
+    description: "Our biological testing utilizes robotic assay stations that measure in-vitro binding kinetics, toxicity levels, and metabolic stability. This high-volume feedback loop validates in-silico models in real-time.",
+  },
+  {
+    name: "Clinical Data Registry",
+    tagline: "Compliant clinical-grade trial registries.",
+    description: "Data architectures aggregate patient logs, blood panel histories, and biomarker reactions. This secure platform is constructed to satisfy clinical trial standards, facilitating rapid data compilation.",
+  },
+];
+
+export default function Technology() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <section className="py-24 bg-background relative z-10 w-full" id="technology">
+      <div className="max-w-container mx-auto px-6 md:px-12">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+        >
+          {/* Left Column - Scientific Tab List */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">
+                R&D Architecture
+              </span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mt-2 mb-6">
+                Discovery Platforms
+              </h2>
+            </div>
+
+            {/* Vertical Tab buttons */}
+            <div className="flex flex-col gap-3">
+              {techPillars.map((pillar, idx) => {
+                const isActive = activeIndex === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`text-left p-5 rounded-xl border transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-accent-teal/35 ${
+                      isActive
+                        ? "bg-white/[0.03] border-accent-teal/30 shadow-[0_0_15px_rgba(0,229,199,0.02)]"
+                        : "bg-transparent border-foreground/5 hover:border-foreground/10 hover:bg-white/[0.01]"
+                    }`}
+                  >
+                    <span
+                      className={`block font-display text-sm font-semibold tracking-tight transition-colors duration-300 ${
+                        isActive ? "text-accent-teal" : "text-foreground"
+                      }`}
+                    >
+                      {pillar.name}
+                    </span>
+                    <span className="block text-xs text-foreground/50 font-sans mt-1 leading-relaxed">
+                      {pillar.tagline}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Column - Informational description & Interactive Morphing Canvas */}
+          <div className="lg:col-span-7 flex flex-col gap-6 w-full">
+            {/* Visualizer network */}
+            <div className="w-full aspect-[4/3] max-h-[420px] relative">
+              <MoleculeNetwork activeIndex={activeIndex} />
+            </div>
+
+            {/* Detailed scientific explanation (CSO pitch style) */}
+            <div className="p-6 rounded-2xl bg-white/[0.01] border border-foreground/5 min-h-[140px] flex flex-col justify-center">
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-sans">
+                {techPillars[activeIndex].description}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
