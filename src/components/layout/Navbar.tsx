@@ -88,10 +88,10 @@ export default function Navbar() {
   return (
     <motion.header
       style={{
-        background,
-        backdropFilter: backdropBlur,
-        WebkitBackdropFilter: backdropBlur,
-        borderBottom,
+        background: isOpen ? "rgba(5, 7, 10, 0.75)" : background,
+        backdropFilter: isOpen ? "blur(12px)" : backdropBlur,
+        WebkitBackdropFilter: isOpen ? "blur(12px)" : backdropBlur,
+        borderBottom: isOpen ? "rgba(244, 246, 245, 0.08)" : borderBottom,
       }}
       className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
     >
@@ -189,7 +189,7 @@ export default function Navbar() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="fixed top-20 right-0 bottom-0 w-80 bg-background border-l border-foreground/10 z-40 md:hidden flex flex-col p-8 justify-between"
+              className="fixed top-20 right-0 bottom-0 w-80 bg-[#05070A]/95 backdrop-blur-xl border-l border-white/10 shadow-[-10px_0_30px_rgba(5,7,10,0.5)] z-40 md:hidden flex flex-col p-8 justify-between"
             >
               <motion.div
                 variants={staggerContainer}
