@@ -4,6 +4,8 @@ import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Preloader from "@/components/layout/Preloader";
+import CustomCursor from "@/components/layout/CustomCursor";
+import GrainOverlay from "@/components/layout/GrainOverlay";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -31,6 +33,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground selection:bg-accent-teal/30 selection:text-accent-teal">
         <Preloader />
+        <CustomCursor />
+        <GrainOverlay />
         <SmoothScrollProvider>
           <Navbar />
           <main className="flex-grow pt-20">
