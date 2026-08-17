@@ -50,10 +50,11 @@ export default function About() {
             scrollTrigger: {
               trigger: containerRef.current,
               start: "top top",
-              end: "+=120%", // Keep pinned for 120% of viewport height
+              end: "+=1500", // Fixed pixel scroll distance
               scrub: 1,
               pin: pinRef.current,
               anticipatePin: 1,
+              invalidateOnRefresh: true,
             },
           });
 
@@ -139,7 +140,7 @@ export default function About() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[140vh] lg:min-h-[220vh] bg-background w-full"
+      className="relative min-h-[140vh] lg:min-h-0 bg-background w-full z-20"
       id="about"
     >
       {/* Pinned main content viewport */}
