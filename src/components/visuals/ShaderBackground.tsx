@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useReducedMotion } from "framer-motion";
 import { useLenis } from "@/components/layout/SmoothScrollProvider";
+import { SECTIONS } from "@/data/sections";
 
 const customVertexShader = `
   varying vec2 vUv;
@@ -86,16 +87,21 @@ const customFragmentShader = `
     float mouseDist = distance(uv, uMouse);
     float mouseGlow = smoothstep(0.4, 0.0, mouseDist) * (0.04 + uScrollVelocity * 0.03);
 
-    // Dynamic gradient color blend (extremely subtle to prevent washing out content)
-    vec3 color = mix(uBgColor, uColorA, n * 0.04); // Muted accent teal blend
-    color = mix(color, uColorB, r.x * 0.03);        // Muted accent violet blend
+    // Dynamic gradient color blend (increased perceptibility while maintaining text contrast)
+    vec3 color = mix(uBgColor, uColorA, n * 0.12); // Increased A mix strength
+    color = mix(color, uColorB, r.x * 0.10);        // Increased B mix strength
     color += uColorA * mouseGlow;                  // Soft hover glow addition
 
     gl_FragColor = vec4(color, 1.0);
   }
 `;
 
-function ShaderPlane({ isVisible }: { isVisible: boolean }) {
+interface ShaderPlaneProps {
+  isVisible: boolean;
+  activeId: string;
+}
+
+function ShaderPlane({ isVisible, activeId }: ShaderPlaneProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const shouldReduceMotion = useReducedMotion();
   const lenis = useLenis();
@@ -114,13 +120,13 @@ function ShaderPlane({ isVisible }: { isVisible: boolean }) {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Create uniforms
+  // Create uniforms (Initial: Teal-dominant matching Hero section)
   const uniforms = useRef({
     uTime: { value: 0 },
     uScrollVelocity: { value: 0.02 },
     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
     uColorA: { value: new THREE.Color("#00E5C7") },
-    uColorB: { value: new THREE.Color("#7C5CFF") },
+    uColorB: { value: new THREE.Color("#05070A") },
     uBgColor: { value: new THREE.Color("#05070A") },
   });
 
@@ -157,6 +163,40 @@ function ShaderPlane({ isVisible }: { isVisible: boolean }) {
     );
 
     uniforms.current.uScrollVelocity.value = 0.02 + scrollVelocity.current * 0.5;
+
+    // 4. Smoothly interpolate (lerp) uniform colors toward the target section color pair
+    const targetColorA = new THREE.Color();
+    const targetColorB = new THREE.Color();
+
+    if (activeId === "hero") {
+      targetColorA.set("#00E5C7"); // Strong Teal-dominant
+      targetColorB.set("#05070A");
+    } else if (activeId === "partners") {
+      targetColorA.set("#00E5C7"); // Teal with subtle dark violet
+      targetColorB.set("#3D2999");
+    } else if (activeId === "about") {
+      targetColorA.set("#00E5C7"); // Balanced 50/50 Teal-Violet
+      targetColorB.set("#7C5CFF");
+    } else if (activeId === "technology") {
+      targetColorA.set("#00E5C7"); // Teal-Violet shifted warmer (deep indigo)
+      targetColorB.set("#4D2BDB");
+    } else if (activeId === "capabilities") {
+      targetColorA.set("#3A1FDB"); // Shifted towards strong violet
+      targetColorB.set("#7C5CFF");
+    } else if (activeId === "stats") {
+      targetColorA.set("#05070A"); // Violet-dominant
+      targetColorB.set("#7C5CFF");
+    } else if (activeId === "contact") {
+      targetColorA.set("#00E5C7"); // Maximum saturated Teal-Violet contrast
+      targetColorB.set("#7C5CFF");
+    } else {
+      targetColorA.set("#00E5C7");
+      targetColorB.set("#7C5CFF");
+    }
+
+    // A lerp factor of 0.045 at 60fps corresponds to roughly 0.6 - 0.8 seconds of transition time (snappy & reactive)
+    uniforms.current.uColorA.value.lerp(targetColorA, 0.045);
+    uniforms.current.uColorB.value.lerp(targetColorB, 0.045);
   });
 
   return (
@@ -176,6 +216,7 @@ function ShaderPlane({ isVisible }: { isVisible: boolean }) {
 export default function ShaderBackground() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeId, setActiveId] = useState("hero");
 
   useEffect(() => {
     // Visibility observer to halt loop in background tabs
@@ -199,6 +240,36 @@ export default function ShaderBackground() {
     };
   }, []);
 
+  // Section visibility tracking observer for section-aware color transitions
+  useEffect(() => {
+    if (isMobile) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -25% 0px", // Trigger when occupying the center half of viewport
+      threshold: 0.15,
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveId(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    SECTIONS.forEach((section) => {
+      const el = document.getElementById(section.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isMobile]);
+
   // Performance Fallback: Render static gradient background on mobile devices
   if (isMobile) {
     return (
@@ -218,7 +289,7 @@ export default function ShaderBackground() {
         gl={{ antialias: false, alpha: false, depth: false }}
         dpr={[1, 1.2]} // Capped DPR to secure framerate
       >
-        <ShaderPlane isVisible={isVisible} />
+        <ShaderPlane isVisible={isVisible} activeId={activeId} />
       </Canvas>
     </div>
   );
