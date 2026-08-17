@@ -140,7 +140,7 @@ export default function About() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[140vh] lg:min-h-0 bg-background w-full z-20"
+      className="relative bg-background w-full z-20"
       id="about"
     >
       {/* Pinned main content viewport */}
