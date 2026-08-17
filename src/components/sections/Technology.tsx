@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/motion-variants";
 import MoleculeNetwork from "../visuals/MoleculeNetwork";
 
@@ -39,21 +39,41 @@ export default function Technology() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
         >
-          {/* Left Column - Scientific Tab List */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          {/* Left Column - Header + Navigation */}
+          <div className="lg:col-span-5 flex flex-col gap-6 w-full">
             <div>
               <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">
                 R&D Architecture
               </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mt-2 mb-6">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mt-2 mb-4 lg:mb-6">
                 Discovery Platforms
               </h2>
             </div>
 
-            {/* Vertical Tab buttons */}
-            <div className="flex flex-col gap-3">
+            {/* Mobile Tab Selector: Horizontal, scrollable pills (Mobile/Tablet only) */}
+            <div className="flex lg:hidden items-center gap-2 overflow-x-auto pb-3 w-full scrollbar-none">
+              {techPillars.map((pillar, idx) => {
+                const isActive = activeIndex === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-medium border transition-all duration-300 focus:outline-none ${
+                      isActive
+                        ? "bg-accent-teal/10 border-accent-teal text-accent-teal"
+                        : "bg-white/[0.02] border-foreground/5 text-foreground/60 hover:border-foreground/10"
+                    }`}
+                  >
+                    {pillar.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Desktop Vertical Tab buttons (Desktop only) */}
+            <div className="hidden lg:flex flex-col gap-3">
               {techPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
@@ -82,19 +102,34 @@ export default function Technology() {
             </div>
           </div>
 
-          {/* Right Column - Informational description & Interactive Morphing Canvas */}
+          {/* Right Column - Visualizer Canvas + Description Display */}
           <div className="lg:col-span-7 flex flex-col gap-6 w-full">
             {/* Visualizer network */}
-            <div className="w-full aspect-[4/3] max-h-[420px] relative">
+            <div className="w-full aspect-[4/3] max-h-[380px] md:max-h-[420px] relative">
               <MoleculeNetwork activeIndex={activeIndex} />
             </div>
 
-            {/* Detailed scientific explanation (CSO pitch style) */}
-            <div className="p-6 rounded-2xl bg-white/[0.01] border border-foreground/5 min-h-[140px] flex flex-col justify-center">
-              <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-sans">
-                {techPillars[activeIndex].description}
-              </p>
-            </div>
+            {/* Detailed Active Tab Info: Title, Tagline, and Description with key-bound transitions */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="p-6 rounded-2xl bg-white/[0.01] border border-foreground/5 min-h-[160px] flex flex-col justify-center"
+              >
+                <h3 className="font-display font-semibold text-base text-accent-teal mb-1">
+                  {techPillars[activeIndex].name}
+                </h3>
+                <p className="text-[10px] text-foreground/40 font-mono uppercase tracking-widest mb-3">
+                  {techPillars[activeIndex].tagline}
+                </p>
+                <p className="text-xs md:text-sm text-foreground/80 leading-relaxed font-sans">
+                  {techPillars[activeIndex].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>
