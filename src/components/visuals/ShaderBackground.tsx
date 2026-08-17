@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { Color, Vector2, Mesh } from "three";
 import { useReducedMotion } from "framer-motion";
 import { useLenis } from "@/components/layout/SmoothScrollProvider";
 import { SECTIONS } from "@/data/sections";
@@ -102,7 +102,7 @@ interface ShaderPlaneProps {
 }
 
 function ShaderPlane({ isVisible, activeId }: ShaderPlaneProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<Mesh>(null);
   const shouldReduceMotion = useReducedMotion();
   const lenis = useLenis();
 
@@ -124,10 +124,10 @@ function ShaderPlane({ isVisible, activeId }: ShaderPlaneProps) {
   const uniforms = useRef({
     uTime: { value: 0 },
     uScrollVelocity: { value: 0.02 },
-    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-    uColorA: { value: new THREE.Color("#00E5C7") },
-    uColorB: { value: new THREE.Color("#05070A") },
-    uBgColor: { value: new THREE.Color("#05070A") },
+    uMouse: { value: new Vector2(0.5, 0.5) },
+    uColorA: { value: new Color("#00E5C7") },
+    uColorB: { value: new Color("#05070A") },
+    uBgColor: { value: new Color("#05070A") },
   });
 
   useFrame((state) => {
@@ -144,7 +144,7 @@ function ShaderPlane({ isVisible, activeId }: ShaderPlaneProps) {
 
     // 2. Lerp cursor coordinates
     uniforms.current.uMouse.value.lerp(
-      new THREE.Vector2(mouseCoords.current.x, mouseCoords.current.y),
+      new Vector2(mouseCoords.current.x, mouseCoords.current.y),
       0.05
     );
 
@@ -155,18 +155,14 @@ function ShaderPlane({ isVisible, activeId }: ShaderPlaneProps) {
       currentVelocity = Math.min(60, Math.abs(lenis.velocity)) / 60;
     }
 
-    // Lerp scroll velocity for smooth lingering decay
-    scrollVelocity.current = THREE.MathUtils.lerp(
-      scrollVelocity.current,
-      currentVelocity,
-      0.03
-    );
+    // Lerp scroll velocity for smooth lingering decay (custom inline lerp to avoid MathUtils weight)
+    scrollVelocity.current += (currentVelocity - scrollVelocity.current) * 0.03;
 
     uniforms.current.uScrollVelocity.value = 0.02 + scrollVelocity.current * 0.5;
 
     // 4. Smoothly interpolate (lerp) uniform colors toward the target section color pair
-    const targetColorA = new THREE.Color();
-    const targetColorB = new THREE.Color();
+    const targetColorA = new Color();
+    const targetColorB = new Color();
 
     if (activeId === "hero") {
       targetColorA.set("#00E5C7"); // Strong Teal-dominant

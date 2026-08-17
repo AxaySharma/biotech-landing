@@ -2,7 +2,7 @@
 
 import React, { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { Group, Color, Vector3, InstancedMesh, Object3D, Quaternion, Vector2, MathUtils } from "three";
 import { EffectComposer, Bloom, ChromaticAberration, Vignette } from "@react-three/postprocessing";
 
 interface DnaMeshProps {
@@ -10,7 +10,7 @@ interface DnaMeshProps {
 }
 
 function HelixVisuals({ isMobile }: DnaMeshProps) {
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<Group>(null);
   
   // Track scroll position to rotate the helix on scroll
   const scrollRotation = useRef(0);
@@ -35,8 +35,8 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
     const spheres = [];
     const rungs = [];
     
-    const colorTeal = new THREE.Color("#00E5C7");
-    const colorViolet = new THREE.Color("#7C5CFF");
+    const colorTeal = new Color("#00E5C7");
+    const colorViolet = new Color("#7C5CFF");
 
     for (let i = 0; i < count; i++) {
       const t = i / count;
@@ -44,7 +44,7 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
       const y = (t - 0.5) * height;
 
       // Color interpolation along the height gradient
-      const color = new THREE.Color().lerpColors(colorTeal, colorViolet, t);
+      const color = new Color().lerpColors(colorTeal, colorViolet, t);
 
       // Strand 1
       const x1 = Math.cos(angle) * radius;
@@ -59,8 +59,8 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
       // Rungs (placed at every alternate index for spacing)
       if (i % 2 === 0) {
         rungs.push({
-          p1: new THREE.Vector3(x1, y, z1),
-          p2: new THREE.Vector3(x2, y, z2),
+          p1: new Vector3(x1, y, z1),
+          p2: new Vector3(x2, y, z2),
           color,
         });
       }
@@ -70,14 +70,14 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
   }, [count, radius, height]);
 
   // Ref references for instanced meshes
-  const sphereMeshRef = useRef<THREE.InstancedMesh>(null);
-  const rungMeshRef = useRef<THREE.InstancedMesh>(null);
+  const sphereMeshRef = useRef<InstancedMesh>(null);
+  const rungMeshRef = useRef<InstancedMesh>(null);
 
   // Set initial transformation matrices and colors
   useEffect(() => {
     if (!sphereMeshRef.current || !rungMeshRef.current) return;
 
-    const tempObject = new THREE.Object3D();
+    const tempObject = new Object3D();
 
     // 1. Setup Spheres
     spheresData.forEach((data, index) => {
@@ -94,16 +94,16 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
 
     // 2. Setup Rungs
     rungsData.forEach((data, index) => {
-      const direction = new THREE.Vector3().subVectors(data.p2, data.p1);
+      const direction = new Vector3().subVectors(data.p2, data.p1);
       const length = direction.length();
-      const midpoint = new THREE.Vector3().addVectors(data.p1, data.p2).multiplyScalar(0.5);
+      const midpoint = new Vector3().addVectors(data.p1, data.p2).multiplyScalar(0.5);
 
       tempObject.position.copy(midpoint);
       tempObject.scale.set(isMobile ? 0.04 : 0.06, length, isMobile ? 0.04 : 0.06);
 
       // Rotate cylinder to align with the connection vector
-      const alignAxis = new THREE.Vector3(0, 1, 0); // Default Cylinder geometry alignment
-      const quaternion = new THREE.Quaternion().setFromUnitVectors(alignAxis, direction.clone().normalize());
+      const alignAxis = new Vector3(0, 1, 0); // Default Cylinder geometry alignment
+      const quaternion = new Quaternion().setFromUnitVectors(alignAxis, direction.clone().normalize());
       tempObject.quaternion.copy(quaternion);
 
       tempObject.updateMatrix();
@@ -133,17 +133,17 @@ function HelixVisuals({ isMobile }: DnaMeshProps) {
     const targetMouseY = state.pointer.y * 0.25;
 
     // Apply lerped rotations
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
+    groupRef.current.rotation.y = MathUtils.lerp(
       groupRef.current.rotation.y,
       baseRotationY + targetScrollRot,
       0.08
     );
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(
+    groupRef.current.rotation.x = MathUtils.lerp(
       groupRef.current.rotation.x,
       targetMouseY,
       0.08
     );
-    groupRef.current.rotation.z = THREE.MathUtils.lerp(
+    groupRef.current.rotation.z = MathUtils.lerp(
       groupRef.current.rotation.z,
       targetMouseX,
       0.08
@@ -220,7 +220,7 @@ export default function DnaHelix({ isMobile }: DnaMeshProps) {
             />
             {/* Very slight chromatic offset near edges */}
             <ChromaticAberration
-              offset={new THREE.Vector2(0.0006, 0.0006)}
+              offset={new Vector2(0.0006, 0.0006)}
             />
             {/* Soft vignette to center focus */}
             <Vignette

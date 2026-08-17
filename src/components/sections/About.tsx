@@ -87,7 +87,7 @@ export default function About() {
         if (words && words.length > 0) {
           gsap.fromTo(
             words,
-            { opacity: 0.15, filter: "blur(4px)" },
+            { opacity: 0.50, filter: "blur(1.5px)" },
             {
               opacity: 1,
               filter: "blur(0px)",
@@ -159,7 +159,7 @@ export default function About() {
               <span
                 key={idx}
                 className="kinetic-word inline-block mr-[0.25em] transition-all"
-                style={{ opacity: 0.15, filter: "blur(4px)" }}
+                style={{ opacity: 0.50, filter: "blur(1.5px)" }}
               >
                 {word}
               </span>
