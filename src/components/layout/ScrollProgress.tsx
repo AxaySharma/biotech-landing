@@ -74,7 +74,7 @@ export default function ScrollProgress() {
             <div
               key={section.id}
               data-cursor="hover"
-              className="relative group flex items-center justify-center w-6 h-6 cursor-pointer"
+              className="relative group flex items-center justify-center w-11 h-11 cursor-pointer"
               onClick={() => handleDotClick(section.id)}
             >
               {/* Tooltip on Hover */}

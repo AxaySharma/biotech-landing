@@ -53,14 +53,14 @@ export default function Technology() {
             </div>
 
             {/* Mobile Tab Selector: Horizontal, scrollable pills (Mobile/Tablet only) */}
-            <div className="flex lg:hidden items-center gap-2 overflow-x-auto pb-3 w-full scrollbar-none">
+            <div className="flex lg:hidden items-center gap-2 overflow-x-auto pb-3 w-full -mx-6 px-6 md:-mx-12 md:px-12 scrollbar-none">
               {techPillars.map((pillar, idx) => {
                 const isActive = activeIndex === idx;
                 return (
                   <button
                     key={idx}
                     onClick={() => setActiveIndex(idx)}
-                    className={`whitespace-nowrap px-4 py-2.5 rounded-full text-xs font-medium border transition-all duration-300 focus:outline-none ${
+                    className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-medium border transition-all duration-300 focus:outline-none ${
                       isActive
                         ? "bg-accent-teal/10 border-accent-teal text-accent-teal"
                         : "bg-white/[0.02] border-foreground/5 text-foreground/60 hover:border-foreground/10"
