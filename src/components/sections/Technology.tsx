@@ -3,7 +3,11 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/motion-variants";
-import MoleculeNetwork from "../visuals/MoleculeNetwork";
+import dynamic from "next/dynamic";
+
+const MoleculeNetwork = dynamic(() => import("../visuals/MoleculeNetwork"), {
+  ssr: false,
+});
 
 const techPillars = [
   {

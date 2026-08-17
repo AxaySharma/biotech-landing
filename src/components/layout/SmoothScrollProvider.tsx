@@ -4,6 +4,12 @@ import React, { createContext, useContext, useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { ScrollTrigger } from "@/lib/gsap";
 
+import dynamic from "next/dynamic";
+
+const ShaderBackground = dynamic(() => import("@/components/visuals/ShaderBackground"), {
+  ssr: false,
+});
+
 const LenisContext = createContext<Lenis | null>(null);
 
 export const useLenis = () => useContext(LenisContext);
@@ -54,6 +60,7 @@ export default function SmoothScrollProvider({
 
   return (
     <LenisContext.Provider value={lenisRef.current}>
+      <ShaderBackground />
       {children}
     </LenisContext.Provider>
   );

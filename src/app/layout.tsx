@@ -7,7 +7,6 @@ import Preloader from "@/components/layout/Preloader";
 import CustomCursor from "@/components/layout/CustomCursor";
 import GrainOverlay from "@/components/layout/GrainOverlay";
 import ScrollProgress from "@/components/layout/ScrollProgress";
-import ShaderBackground from "@/components/visuals/ShaderBackground";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -23,6 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nexusbio.tech'),
   title: "NEXUSBIO — Architecting Molecular Intelligence",
   description: "Nexus Bio develops programmable therapeutics and molecular dynamics simulations to program genetic logic and accelerate clinical translation.",
   openGraph: {
@@ -52,7 +52,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScrollProvider>
           <Navbar />
           <ScrollProgress />
-          <ShaderBackground />
           <main className="flex-grow pt-20 relative z-10">
             {children}
           </main>
