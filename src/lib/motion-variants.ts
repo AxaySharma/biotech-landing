@@ -2,7 +2,7 @@ import { Variants } from "framer-motion";
 
 // Custom premium cubic-bezier easing: highly precise, smooth decelerating curve
 // Fits a clinical, high-tech, biotechnology aesthetic.
-export const EASE_PRECISE = [0.16, 1, 0.3, 1];
+export const EASE_PRECISE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /**
  * Static motion variants (ready to use directly)
