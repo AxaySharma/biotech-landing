@@ -41,7 +41,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-0 z-10">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-0 z-10">
       {/* Background ambient glow accents */}
       <div className="absolute top-1/4 left-10 w-[300px] h-[300px] rounded-full bg-accent-teal/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-10 w-[350px] h-[350px] rounded-full bg-accent-violet/5 blur-[140px] pointer-events-none" />

@@ -62,7 +62,7 @@ const partners = [
 
 export default function Partners() {
   return (
-    <section className="w-full bg-background py-16 border-t border-foreground/5 relative z-10">
+    <section id="partners" className="w-full bg-background py-16 border-t border-foreground/5 relative z-10">
       <div className="max-w-container mx-auto px-6 md:px-12">
         <motion.div
           variants={fadeUp}
