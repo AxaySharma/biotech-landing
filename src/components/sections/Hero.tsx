@@ -41,7 +41,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20 z-10">
       {/* Background ambient glow accents */}
       <div className="absolute top-1/4 left-10 w-[300px] h-[300px] rounded-full bg-accent-teal/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-10 w-[350px] h-[350px] rounded-full bg-accent-violet/5 blur-[140px] pointer-events-none" />
@@ -103,8 +103,8 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right Side 3D Visualizer Column */}
-        <div className="col-span-1 md:col-span-5 h-[40vh] md:h-[70vh] flex items-center justify-center order-1 md:order-2 relative">
+        {/* Right Side 3D Visualizer Column - Absolute on mobile to prevent overflow/bleed, relative on desktop */}
+        <div className="absolute inset-0 md:relative md:col-span-5 h-full md:h-[70vh] flex items-center justify-center pointer-events-none md:pointer-events-auto z-0 md:z-10 opacity-20 md:opacity-100 transition-opacity duration-500">
           <div className="absolute inset-0 z-0">
             {/* 3D double-helix element */}
             <DnaHelix isMobile={isMobile} />
