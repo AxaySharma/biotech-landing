@@ -7,6 +7,7 @@ import Preloader from "@/components/layout/Preloader";
 import CustomCursor from "@/components/layout/CustomCursor";
 import GrainOverlay from "@/components/layout/GrainOverlay";
 import ScrollProgress from "@/components/layout/ScrollProgress";
+import ShaderBackground from "@/components/visuals/ShaderBackground";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -51,7 +52,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScrollProvider>
           <Navbar />
           <ScrollProgress />
-          <main className="flex-grow pt-20">
+          <ShaderBackground />
+          <main className="flex-grow pt-20 relative z-10">
             {children}
           </main>
           <Footer />
